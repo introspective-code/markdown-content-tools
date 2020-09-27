@@ -1,0 +1,36 @@
+{
+  "name": "markdown-content-tools",
+  "version": "1.0.0",
+  "description": "Content generation and automation tools with md",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "./node_modules/.bin/nodemon --ignore 'client/' --exec ./node_modules/.bin/babel-node ./server",
+    "build": "./node_modules/.bin/babel -d ./dist ./server",
+    "prebuild": "rm -rf dist/* client/build/*",
+    "start": "node ./dist/index.js",
+    "prestart": "npm run build && cd client && npm run build && cd .. && mkdir dist/client dist/client/build && cp -rf client/build dist/client"
+  },
+  "keywords": [
+    "markdown",
+    "node",
+    "automation",
+    "content"
+  ],
+  "author": "Nafeu Nasir <nafeu.nasir@gmail.com> (http://nafeu.com/)",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "7.11.6",
+    "@babel/core": "7.11.6",
+    "@babel/node": "7.10.5",
+    "@babel/preset-env": "7.11.5",
+    "nodemon": "2.0.4"
+  },
+  "dependencies": {
+    "dotenv": "8.2.0",
+    "express": "4.17.1",
+    "lodash": "4.17.20",
+    "regenerator-runtime": "0.13.7",
+    "socket.io": "2.3.0"
+  }
+}
