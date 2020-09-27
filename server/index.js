@@ -1,22 +1,13 @@
-import { watchFile, readFileSync } from "fs";
+import "dotenv/config";
 import express from "express";
 import http from "http";
 import path from "path";
 import socketIo from "socket.io";
-import { connectRealtimeServices } from "./socket";
+import { connectRealtimeServices, initializeRealtimeServices } from "./socket";
 import api from "./api/v1";
 
-const DOCUMENT_PATH = process.env.DOCUMENT_PATH || "devnotes.txt";
 const SOCKET_HEARTBEAT_TIMEOUT = 4000;
 const SOCKET_HEARTBEAT_INTERVAL = 2000;
-
-watchFile(DOCUMENT_PATH, async (curr, prev) => {
-  try {
-    const file = readFileSync(DOCUMENT_PATH, "utf-8");
-  } catch (err) {
-    console.log(err.message);
-  }
-});
 
 const app = express();
 const server = http.Server(app);
@@ -34,6 +25,8 @@ server.listen(process.env.PORT || 8000, () => {
 });
 
 io.on("connection", (socket) => connectRealtimeServices({ io, socket }));
+
+initializeRealtimeServices({ io });
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
