@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import "./app.css";
 import "typeface-roboto-mono";
+import "./vendor/hljs-theme.css";
 import Home from "./pages/home";
 import { Socket, Event } from "react-socket-io";
 import { MainContextProvider } from "./context/main";

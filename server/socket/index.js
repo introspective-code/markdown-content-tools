@@ -30,8 +30,9 @@ export const initializeRealtimeServices = ({ io }) => {
 const getDocument = () => {
   try {
     const text = readFileSync(DOCUMENT_PATH, "utf-8");
-    const { description, title, date, tags } = loadFront(text);
-    const markdown = text.split("---\n")[2];
+    const { description, title, date, tags, __content: markdown } = loadFront(
+      text
+    );
     const markup = converter.render(markdown);
 
     return {
