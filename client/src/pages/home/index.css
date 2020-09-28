@@ -6,6 +6,33 @@
   font-size: 0.75em;
 }
 
+.codeblock {
+  background-color: white;
+  margin-bottom: 10px;
+  padding: 15px;
+  border-radius: 3px;
+}
+
+.codeblock pre {
+  margin: 5px;
+  padding: 5px;
+  border: 1px solid #c8d6e5;
+  border-radius: 3px;
+}
+
+.codeblock-header {
+  text-align: center;
+  font-size: 0.75em;
+  font-weight: 400;
+}
+
+.codeblock-filename {
+  text-align: center;
+  font-size: 0.6em;
+  font-weight: 800;
+  color: #c8d6e5;
+}
+
 .front-matter {
   padding: 10px;
   margin: 0px 0px 10px 0px;

@@ -14,7 +14,17 @@ export const getDocument = () => {
     const { description, title, date, tags, __content: markdown } = loadFront(
       text
     );
-    const markup = converter.render(markdown);
+
+    let processedMarkdown = markdown;
+
+    processedMarkdown = _(processedMarkdown)
+      .chain()
+      .split("\n")
+      .filter((line) => !_.includes(line, "%%%"))
+      .join("\n")
+      .value();
+
+    const markup = converter.render(processedMarkdown);
 
     return {
       description,
@@ -29,7 +39,7 @@ export const getDocument = () => {
   return {};
 };
 
-export const getSplitDocument = () => {
+export const getDocumentComponents = () => {
   const output = {};
 
   const text = readFileSync(DOCUMENT_PATH, "utf-8");
@@ -44,19 +54,18 @@ export const getSplitDocument = () => {
 
   const codeblocks = {};
 
-  const codeblockPattern = /<%%% (.*)%%%>/gms;
+  const codeblockPattern = /<%%% (.*?)%%%>/gms;
 
   let codeblockCounter = 0;
   const codeblockMatches = markdown.matchAll(codeblockPattern);
 
   for (const match of codeblockMatches) {
+    const key = codeblockCounter++;
     const [header, block] = match[1].split(/\n(.*)/s);
     const extension = getExtension(/```(.*)/gm.exec(block)[1]);
-    const filename = `${_.kebabCase(title)}-${_.kebabCase(
+    const filename = `${_.kebabCase(title)}-${key}-${_.kebabCase(
       header
     )}.${extension}`;
-
-    const key = codeblockCounter++;
 
     codeblocks[key] = {
       header,
@@ -88,7 +97,7 @@ export const getSplitDocument = () => {
           markdown: block,
         },
       });
-    } else {
+    } else if (section !== "") {
       components.push({
         type: "slide",
         meta: {},
@@ -108,6 +117,7 @@ export const getSplitDocument = () => {
 const getExtension = (language) => {
   const extensionMap = {
     javascript: "js",
+    json: "json",
   };
   return extensionMap[language];
 };

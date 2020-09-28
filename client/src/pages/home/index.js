@@ -6,7 +6,9 @@ import "./index.css";
 import moment from "moment";
 
 const Home = () => {
-  const [post, setPost] = useState("");
+  const [isSplitDocument, setIsSplitDocument] = useState(true);
+  const [markdownSlide, setMarkdownSlide] = useState("");
+  const [splitDocument, setSplitDocument] = useState("");
   const [meta, setMeta] = useState({
     title: "",
     description: "",
@@ -14,8 +16,30 @@ const Home = () => {
     tags: [],
   });
 
-  const handleUpdatePost = ({ markup, title, description, date, tags }) => {
-    setPost(markup);
+  const handleUpdateSinglePost = ({
+    markup,
+    title,
+    description,
+    date,
+    tags,
+  }) => {
+    setMarkdownSlide(markup);
+    setMeta({
+      title,
+      description,
+      date,
+      tags,
+    });
+  };
+
+  const handleUpdateSplitDocument = ({
+    components,
+    title,
+    description,
+    date,
+    tags,
+  }) => {
+    setSplitDocument(components);
     setMeta({
       title,
       description,
@@ -27,8 +51,16 @@ const Home = () => {
   return (
     <React.Fragment>
       <FrontMatter {...meta} />
-      <Markdown post={post} />
-      <Event event="update-document" handler={handleUpdatePost} />
+      {isSplitDocument ? (
+        <SplitDocument components={splitDocument} />
+      ) : (
+        <MarkdownSlide content={markdownSlide} />
+      )}
+      <Event event="update-document" handler={handleUpdateSinglePost} />
+      <Event
+        event="update-document-components"
+        handler={handleUpdateSplitDocument}
+      />
     </React.Fragment>
   );
 };
@@ -68,13 +100,38 @@ const FrontMatter = ({ title, description, date, tags }) => {
   );
 };
 
-const Markdown = ({ post }) => {
+const MarkdownSlide = ({ content }) => {
   return (
     <div
       className="markdown-body"
-      dangerouslySetInnerHTML={{ __html: post }}
+      dangerouslySetInnerHTML={{ __html: content }}
     ></div>
   );
+};
+
+const Codeblock = ({ header, filename, content }) => {
+  return (
+    <div className="codeblock">
+      <div className="codeblock-header">{header}</div>
+      <div
+        className="codeblock-content"
+        dangerouslySetInnerHTML={{ __html: content }}
+      ></div>
+      <div className="codeblock-filename">{filename}</div>
+    </div>
+  );
+};
+
+const SplitDocument = ({ components }) => {
+  return _.map(components, (component) => {
+    if (component.type === "codeblock") {
+      return (
+        <Codeblock {...component.meta} content={component.content.markup} />
+      );
+    } else {
+      return <MarkdownSlide content={component.content.markup} />;
+    }
+  });
 };
 
 export default Home;
