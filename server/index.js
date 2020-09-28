@@ -5,9 +5,22 @@ import path from "path";
 import socketIo from "socket.io";
 import { connectRealtimeServices, initializeRealtimeServices } from "./socket";
 import api from "./api/v1";
+import { existsSync, mkdirSync } from "fs";
 
+const DOCUMENTS_PATH = process.env.DOCUMENTS_PATH;
+const EXPORTS_PATH = process.env.EXPORTS_PATH;
 const SOCKET_HEARTBEAT_TIMEOUT = 4000;
 const SOCKET_HEARTBEAT_INTERVAL = 2000;
+
+if (!existsSync(DOCUMENTS_PATH)) {
+  console.log(`[ server ] Creating documents path at ${DOCUMENTS_PATH}`);
+  mkdirSync(DOCUMENTS_PATH);
+}
+
+if (!existsSync(EXPORTS_PATH)) {
+  console.log(`[ server ] Creating exports path at ${EXPORTS_PATH}`);
+  mkdirSync(EXPORTS_PATH);
+}
 
 const app = express();
 const server = http.Server(app);

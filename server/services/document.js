@@ -4,13 +4,11 @@ import markdownIt from "markdown-it";
 import markdownItHighlightJs from "markdown-it-highlightjs";
 import _ from "lodash";
 
-const DOCUMENT_PATH = process.env.DOCUMENT_PATH;
-
 const converter = new markdownIt().use(markdownItHighlightJs);
 
-export const getDocument = () => {
+export const getDocument = (path) => {
   try {
-    const text = readFileSync(DOCUMENT_PATH, "utf-8");
+    const text = readFileSync(path, "utf-8");
     const { description, title, date, tags, __content: markdown } = loadFront(
       text
     );
@@ -27,6 +25,7 @@ export const getDocument = () => {
     const markup = converter.render(processedMarkdown);
 
     return {
+      path,
       description,
       title,
       date,
@@ -39,10 +38,10 @@ export const getDocument = () => {
   return {};
 };
 
-export const getDocumentComponents = () => {
+export const getDocumentComponents = (path) => {
   const output = {};
 
-  const text = readFileSync(DOCUMENT_PATH, "utf-8");
+  const text = readFileSync(path, "utf-8");
   const { description, title, date, tags } = loadFront(text);
 
   let markdown = text.split("---\n")[2];
@@ -51,6 +50,7 @@ export const getDocumentComponents = () => {
   output.description = description;
   output.date = date;
   output.tags = tags;
+  output.path = path;
 
   const codeblocks = {};
 

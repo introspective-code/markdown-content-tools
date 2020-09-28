@@ -10,6 +10,7 @@ const Home = () => {
   const [markdownSlide, setMarkdownSlide] = useState("");
   const [splitDocument, setSplitDocument] = useState("");
   const [meta, setMeta] = useState({
+    path: "",
     title: "",
     description: "",
     date: "",
@@ -17,6 +18,7 @@ const Home = () => {
   });
 
   const handleUpdateSinglePost = ({
+    path,
     markup,
     title,
     description,
@@ -25,6 +27,7 @@ const Home = () => {
   }) => {
     setMarkdownSlide(markup);
     setMeta({
+      path,
       title,
       description,
       date,
@@ -33,6 +36,7 @@ const Home = () => {
   };
 
   const handleUpdateSplitDocument = ({
+    path,
     components,
     title,
     description,
@@ -41,6 +45,7 @@ const Home = () => {
   }) => {
     setSplitDocument(components);
     setMeta({
+      path,
       title,
       description,
       date,
@@ -65,7 +70,7 @@ const Home = () => {
   );
 };
 
-const FrontMatter = ({ title, description, date, tags }) => {
+const FrontMatter = ({ title, description, date, tags, path }) => {
   const Tags = ({ tags }) => {
     return (
       <div className="front-matter-tags">
@@ -86,6 +91,9 @@ const FrontMatter = ({ title, description, date, tags }) => {
 
   return (
     <div className="front-matter">
+      <div className="front-matter-path">
+        Currently Editing: <Value value={path} />
+      </div>
       <div className="front-matter-title">
         Title: <Value value={title} />
       </div>

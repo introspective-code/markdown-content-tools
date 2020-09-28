@@ -1,1 +1,2 @@
-DOCUMENT_PATH=devnotes.txt
+DOCUMENTS_PATH=./documents
+EXPORTS_PATH=./exports

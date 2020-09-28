@@ -1,23 +1,28 @@
-import { watchFile, readFileSync } from "fs";
+import { watch, readFileSync } from "fs";
 import { getDocument, getDocumentComponents } from "../services/document";
 
-const DOCUMENT_PATH = process.env.DOCUMENT_PATH;
+const DOCUMENTS_PATH = process.env.DOCUMENTS_PATH;
+let lastEditedFile;
 
 export const connectRealtimeServices = ({ io, socket }) => {
   console.log(`[ server/socket ] Client: ${socket.id} connected.`);
 
-  socket.emit("update-document", getDocument());
-  socket.emit("update-document-components", getDocumentComponents());
+  if (lastEditedFile) {
+    socket.emit("update-document", getDocument(lastEditedFile));
+    socket.emit(
+      "update-document-components",
+      getDocumentComponents(lastEditedFile)
+    );
+  }
 };
 
 export const initializeRealtimeServices = ({ io }) => {
-  io.emit("update-document", getDocument());
-  io.emit("update-document-components", getDocumentComponents());
-
-  watchFile(DOCUMENT_PATH, async (curr, prev) => {
+  watch(DOCUMENTS_PATH, async (eventType, filename) => {
     try {
-      io.emit("update-document", getDocument());
-      io.emit("update-document-components", getDocumentComponents());
+      const path = `${DOCUMENTS_PATH}/${filename}`;
+      lastEditedFile = path;
+      io.emit("update-document", getDocument(path));
+      io.emit("update-document-components", getDocumentComponents(path));
     } catch (err) {
       console.log(err.message);
     }
