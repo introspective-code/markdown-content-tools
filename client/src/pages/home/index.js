@@ -1,41 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import _ from "lodash";
-import { Event } from "react-socket-io";
+import { Event, SocketContext } from "react-socket-io";
 import "github-markdown-css/github-markdown.css";
 import "./index.css";
 import moment from "moment";
 
 const Home = () => {
-  const [isSplitDocument, setIsSplitDocument] = useState(true);
-  const [markdownSlide, setMarkdownSlide] = useState("");
-  const [splitDocument, setSplitDocument] = useState("");
-  const [meta, setMeta] = useState({
-    path: "",
-    title: "",
-    description: "",
-    date: "",
-    tags: [],
-  });
+  const [mctDocument, setMctDocument] = useState(null);
+  const [listedFiles, setListedFiles] = useState([]);
 
-  const handleUpdateSinglePost = ({
-    path,
-    markup,
-    title,
-    description,
-    date,
-    tags,
-  }) => {
-    setMarkdownSlide(markup);
-    setMeta({
-      path,
-      title,
-      description,
-      date,
-      tags,
-    });
-  };
+  const socket = useContext(SocketContext);
 
-  const handleUpdateSplitDocument = ({
+  useEffect(() => {
+    socket.emit("list-files");
+  }, []);
+
+  const handleUpdateMctDocument = ({
     path,
     components,
     title,
@@ -43,29 +23,40 @@ const Home = () => {
     date,
     tags,
   }) => {
-    setSplitDocument(components);
-    setMeta({
-      path,
-      title,
-      description,
-      date,
-      tags,
+    setMctDocument({
+      components,
+      meta: {
+        path,
+        title,
+        description,
+        date,
+        tags,
+      },
     });
+  };
+
+  const handleListFiles = ({ files }) => {
+    setListedFiles(files);
+  };
+
+  const handleClickFile = (file) => {
+    socket.emit("edit-file", { file });
   };
 
   return (
     <React.Fragment>
-      <FrontMatter {...meta} />
-      {isSplitDocument ? (
-        <SplitDocument components={splitDocument} />
+      {mctDocument ? (
+        <React.Fragment>
+          <FrontMatter {...mctDocument.meta} />
+          <MctDocument components={mctDocument.components} />
+        </React.Fragment>
       ) : (
-        <MarkdownSlide content={markdownSlide} />
+        <React.Fragment>
+          <ListedFiles files={listedFiles} handleClick={handleClickFile} />
+        </React.Fragment>
       )}
-      <Event event="update-document" handler={handleUpdateSinglePost} />
-      <Event
-        event="update-document-components"
-        handler={handleUpdateSplitDocument}
-      />
+      <Event event="update-document" handler={handleUpdateMctDocument} />
+      <Event event="list-files" handler={handleListFiles} />
     </React.Fragment>
   );
 };
@@ -130,7 +121,7 @@ const Codeblock = ({ header, filename, content }) => {
   );
 };
 
-const SplitDocument = ({ components }) => {
+const MctDocument = ({ components }) => {
   return _.map(components, (component) => {
     if (component.type === "codeblock") {
       return (
@@ -140,6 +131,24 @@ const SplitDocument = ({ components }) => {
       return <MarkdownSlide content={component.content.markup} />;
     }
   });
+};
+
+const ListedFiles = ({ files, handleClick }) => {
+  return (
+    <div className="listed-files">
+      {_.map(files, (file) => {
+        return (
+          <div
+            key={file}
+            onClick={() => handleClick(file)}
+            className="listed-file"
+          >
+            {file}
+          </div>
+        );
+      })}
+    </div>
+  );
 };
 
 export default Home;

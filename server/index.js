@@ -6,6 +6,7 @@ import socketIo from "socket.io";
 import { connectRealtimeServices, initializeRealtimeServices } from "./socket";
 import api from "./api/v1";
 import { existsSync, mkdirSync } from "fs";
+import regeneratorRuntime from "regenerator-runtime";
 
 const DOCUMENTS_PATH = process.env.DOCUMENTS_PATH;
 const EXPORTS_PATH = process.env.EXPORTS_PATH;

@@ -6,39 +6,7 @@ import _ from "lodash";
 
 const converter = new markdownIt().use(markdownItHighlightJs);
 
-export const getDocument = (path) => {
-  try {
-    const text = readFileSync(path, "utf-8");
-    const { description, title, date, tags, __content: markdown } = loadFront(
-      text
-    );
-
-    let processedMarkdown = markdown;
-
-    processedMarkdown = _(processedMarkdown)
-      .chain()
-      .split("\n")
-      .filter((line) => !_.includes(line, "%%%"))
-      .join("\n")
-      .value();
-
-    const markup = converter.render(processedMarkdown);
-
-    return {
-      path,
-      description,
-      title,
-      date,
-      tags,
-      markup,
-    };
-  } catch (err) {
-    console.log(err.message);
-  }
-  return {};
-};
-
-export const getDocumentComponents = (path) => {
+export const getMctDocument = (path) => {
   const output = {};
 
   const text = readFileSync(path, "utf-8");
