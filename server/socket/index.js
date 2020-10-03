@@ -20,6 +20,8 @@ export const connectRealtimeServices = ({ io, socket }) => {
   socket.on("edit-file", ({ file }) => {
     console.log(`[ server/socket ] >>> edit-file <<< : ${file}`);
     openWithEditor(file);
+    const path = `${process.env.DOCUMENTS_PATH}/${file}`;
+    socket.emit("update-document", getMctDocument(path));
   });
 };
 

@@ -135,19 +135,29 @@ const MctDocument = ({ components }) => {
 
 const ListedFiles = ({ files, handleClick }) => {
   return (
-    <div className="listed-files">
-      {_.map(files, (file) => {
-        return (
-          <div
-            key={file}
-            onClick={() => handleClick(file)}
-            className="listed-file"
-          >
-            {file}
-          </div>
-        );
-      })}
-    </div>
+    <React.Fragment>
+      <div className="listed-files-header">
+        <div className="listed-files-option listed-files-option-select">
+          Select A File
+        </div>
+        <div className="listed-files-option listed-files-option-new">
+          New File
+        </div>
+      </div>
+      <div className="listed-files">
+        {_.map(files, (file) => {
+          return (
+            <div
+              key={file}
+              onClick={() => handleClick(file)}
+              className="listed-file"
+            >
+              {file}
+            </div>
+          );
+        })}
+      </div>
+    </React.Fragment>
   );
 };
 

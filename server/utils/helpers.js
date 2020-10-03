@@ -14,9 +14,10 @@ export const executeShellCommand = (command) => {
 
 export const openWithEditor = (file) => {
   if (process.env.EDITOR) {
-    executeShellCommand(`cat ${process.env.DOCUMENTS_PATH}/${file}`);
+    executeShellCommand(`$EDITOR ${process.env.DOCUMENTS_PATH}/${file}`);
+  } else {
+    console.log(`[ server/utils/helpers ] No $EDITOR detected...`);
   }
-  console.log(`[ server/utils/helpers ] No $EDITOR detected...`);
 };
 
 export const listFilesInDocumentsPath = () => {
