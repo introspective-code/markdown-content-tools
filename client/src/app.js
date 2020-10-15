@@ -4,13 +4,16 @@ import { createBrowserHistory } from "history";
 import "./app.css";
 import "typeface-roboto-mono";
 import "./vendor/hljs-theme.css";
-import Home from "./pages/home";
 import { Socket, Event } from "react-socket-io";
 import { MainContextProvider } from "./context/main";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import Title from "./components/title";
-// import Navigation from "./components/navigation";
+import Navigation from "./components/navigation";
+
+import Home from "./pages/home";
+import Export from "./pages/export";
+import Publish from "./pages/publish";
 
 const history = createBrowserHistory();
 
@@ -43,7 +46,10 @@ function App() {
       {socketStatus ? (
         <React.Fragment>
           <Title title={"Markdown Content Tools"} />
+          <Navigation />
           <Route exact path="/" component={Home} />
+          <Route exact path="/export" component={Export} />
+          <Route exact path="/publish" component={Publish} />
         </React.Fragment>
       ) : (
         <FontAwesomeIcon icon={faSpinner} size="3x" pulse />

@@ -1,0 +1,35 @@
+a {
+  color: inherit; /* blue colors for links too */
+  text-decoration: inherit; /* no underline */
+}
+
+.navigation {
+  padding-bottom: 20px;
+  font-weight: 800;
+  font-size: 1.25em;
+  color: #c8d6e5;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.navigation-option {
+  color: #2e86de;
+  margin-right: 10px;
+  border-bottom: 2px solid;
+  cursor: pointer;
+  padding-bottom: 6px;
+  transition: 100ms ease-in-out all;
+  opacity: 0.25;
+}
+
+.navigation-option:hover {
+  color: #10ac84;
+  margin-right: 10px;
+  border-bottom: 8px solid;
+  padding-bottom: 0px;
+  opacity: 1;
+}
+
+.navigation-selected {
+  opacity: 1;
+}
