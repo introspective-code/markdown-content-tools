@@ -8,6 +8,7 @@ import moment from "moment";
 const Home = () => {
   const [mctDocument, setMctDocument] = useState(null);
   const [listedFiles, setListedFiles] = useState([]);
+  const [isValidFilename, setIsValidFilename] = useState(true);
 
   const socket = useContext(SocketContext);
 
@@ -43,6 +44,15 @@ const Home = () => {
     socket.emit("edit-file", { file });
   };
 
+  const handleClickCreate = (filename) => {
+    if (filename !== "") {
+      setIsValidFilename(true);
+      console.log({ filename });
+    } else {
+      setIsValidFilename(false);
+    }
+  }
+
   return (
     <React.Fragment>
       {mctDocument ? (
@@ -52,7 +62,14 @@ const Home = () => {
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <ListedFiles files={listedFiles} handleClick={handleClickFile} />
+          <div className="edit-container">
+            <div className="edit-box">
+              <ListedFiles files={listedFiles} handleClick={handleClickFile} />
+            </div>
+            <div className="edit-box">
+              <NewFile handleClick={handleClickCreate} valid={isValidFilename} />
+            </div>
+          </div>
         </React.Fragment>
       )}
       <Event event="update-document" handler={handleUpdateMctDocument} />
@@ -136,18 +153,54 @@ const MctDocument = ({ components }) => {
 const ListedFiles = ({ files, handleClick }) => {
   return (
     <React.Fragment>
+      <div className="edit-title">Edit Existing Files</div>
       <div className="listed-files">
         {_.map(files, (file) => {
           return (
             <div
-              key={file}
-              onClick={() => handleClick(file)}
-              className="listed-file"
+            key={file}
+            onClick={() => handleClick(file)}
+            className="listed-file"
             >
               {file}
             </div>
           );
         })}
+      </div>
+    </React.Fragment>
+  );
+};
+
+const NewFile = ({ handleClick, valid }) => {
+  const [newFileName, setNewFileName] = useState("");
+
+  const handleChange = (event) => {
+    const { value } = event.target;
+    const newValue = value
+      .replace(/\s+/g, "-")
+      .replace(/[^a-zA-Z0-9 \-_\.]/g, "")
+      .toLowerCase();
+    setNewFileName(newValue);
+  };
+
+  const handleCreateNewFile = () => {
+    handleClick(newFileName);
+  };
+
+  return (
+    <React.Fragment>
+      <div className="edit-title">Create New File</div>
+      <div className="new-file-options">
+        <input
+          onChange={(event) => handleChange(event)}
+          className={`new-file-input ${valid ? "" : "invalid-file-name"}`}
+          placeholder="Enter file name"
+          value={newFileName}
+        />
+        <div className="new-file-format">.md</div>
+        <div onClick={handleCreateNewFile} className="new-file-create-btn">
+          Create
+        </div>
       </div>
     </React.Fragment>
   );

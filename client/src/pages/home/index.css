@@ -63,7 +63,7 @@
 .listed-files {
   color: #feca57;
   font-weight: 800;
-  font-size: 1.5em;
+  font-size: 1.25em;
   padding-bottom: 8px;
   border-bottom: 2px solid #feca57;
 }
@@ -76,6 +76,7 @@
 .listed-file:hover {
   opacity: 0.5;
   padding-left: 5px;
+  color: #00d2d3;
 }
 
 .listed-file:active {
@@ -84,4 +85,76 @@
   -ms-user-select: none; /* IE 10+ */
   color: #00d2d3;
   padding-left: 10px;
+}
+
+.edit-container {
+  display: flex;
+}
+
+.edit-box {
+  flex: 50%;
+}
+
+.edit-title {
+  color: #feca57;
+  text-align: center;
+  font-size: 0.5em;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  padding-bottom: 10px;
+}
+
+.new-file-options {
+  margin: 10px;
+  display: flex;
+  justify-content: center;;
+}
+
+.new-file-input {
+  background-color: #222f3e;
+  border: none;
+  border-bottom: 2px solid #feca57;
+  font-size: 1.2em;
+  color: #feca57;
+  padding: 5px;
+  width: 50%;
+  margin-right: 10px;
+  transition: .2s ease-in-out all;
+}
+
+.new-file-input::placeholder {
+  color: #3b4141;
+}
+
+.new-file-create-btn {
+  height: 20px;
+  background-color: #feca57;
+  font-weight: 800;
+  color: #222f3e;
+  padding: 10px;
+  cursor: pointer;
+  transition: .2s ease-in-out opacity;
+}
+
+.new-file-format {
+  height: 20px;
+  border: 2px solid #feca57;
+  font-weight: 800;
+  color: #feca57;
+  padding: 8px;
+  transition: .2s ease-in-out opacity;
+  margin-right: 10px;
+}
+
+.new-file-create-btn:hover {
+  opacity: 0.5;
+}
+
+.new-file-create-btn:active {
+  background-color: #00d2d3;
+}
+
+.invalid-file-name {
+  border-bottom-color: #ee5253;
 }

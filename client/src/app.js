@@ -45,7 +45,7 @@ function App() {
     <Router history={history}>
       {socketStatus ? (
         <React.Fragment>
-          <Title title={"Markdown Content Tools"} />
+          <Title title={"Content Tools"} />
           <Navigation />
           <Route exact path="/" component={Home} />
           <Route exact path="/export" component={Export} />

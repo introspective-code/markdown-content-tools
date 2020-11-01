@@ -6,7 +6,7 @@ import { faMarkdown } from "@fortawesome/free-brands-svg-icons";
 const Title = ({ title }) => {
   return (
     <div className="title">
-      <FontAwesomeIcon icon={faMarkdown} /> {title}
+      <FontAwesomeIcon icon={faMarkdown} /> Markdown <span className="title-bold">{title}</span>
     </div>
   );
 };

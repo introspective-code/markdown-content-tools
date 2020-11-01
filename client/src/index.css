@@ -1,6 +1,15 @@
+/* Palette: https://flatuicolors.com/palette/ca */
+
 body {
   margin: 0;
   font-family: "Roboto Mono", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+input {
+  font-family: "Roboto Mono", "Helvetica Neue", sans-serif;
+  box-shadow : none;
+  outline: none;
+  appearance: none;
 }

@@ -13,17 +13,17 @@ a {
 }
 
 .navigation-option {
-  color: #2e86de;
+  color: #feca57;
   margin-right: 10px;
   border-bottom: 2px solid;
   cursor: pointer;
   padding-bottom: 6px;
   transition: 100ms ease-in-out all;
-  opacity: 0.25;
+  opacity: 0.1;
 }
 
 .navigation-option:hover {
-  color: #10ac84;
+  color: #00d2d3;
   margin-right: 10px;
   border-bottom: 8px solid;
   padding-bottom: 0px;
