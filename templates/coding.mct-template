@@ -1,0 +1,25 @@
+---
+layout: post
+title: "Coding Lesson Title"
+description: "Template for coding lesson"
+date: 2020-01-11
+tags: [coding, dev]
+comments: true
+share: true
+---
+# Coding Lesson Title
+
+## Plain Code Blocks with Split Code Blocks
+
+```bash
+echo "Hello World" > testing.txt
+```
+
+<%%% Javascript Code Example
+```javascript
+const x = 1;
+const y = 2;
+
+console.log(x + y);
+```
+%%%>

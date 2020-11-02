@@ -44,10 +44,10 @@ const Home = () => {
     socket.emit("edit-file", { file });
   };
 
-  const handleClickCreate = (filename) => {
-    if (filename !== "") {
+  const handleClickCreate = (file) => {
+    if (file !== "") {
       setIsValidFilename(true);
-      console.log({ filename });
+      socket.emit("create-file", { file });
     } else {
       setIsValidFilename(false);
     }

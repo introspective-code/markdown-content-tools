@@ -1,6 +1,10 @@
 import { watch, readFileSync } from "fs";
 import { getMctDocument } from "../services/document";
-import { listFilesInDocumentsPath, openWithEditor } from "../utils/helpers";
+import {
+  listFilesInDocumentsPath,
+  openWithEditor,
+  createAndOpenWithEditor,
+} from "../utils/helpers";
 
 const DOCUMENTS_PATH = process.env.DOCUMENTS_PATH;
 let lastEditedFile;
@@ -16,6 +20,12 @@ export const connectRealtimeServices = ({ io, socket }) => {
 
   socket.on("edit-file", ({ file }) => {
     openWithEditor(file);
+    const path = `${process.env.DOCUMENTS_PATH}/${file}`;
+    socket.emit("update-document", getMctDocument(path));
+  });
+
+  socket.on("create-file", ({ file, template = 'coding' }) => {
+    createAndOpenWithEditor({ file, template });
     const path = `${process.env.DOCUMENTS_PATH}/${file}`;
     socket.emit("update-document", getMctDocument(path));
   });

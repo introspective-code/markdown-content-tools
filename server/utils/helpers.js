@@ -20,6 +20,17 @@ export const openWithEditor = (file) => {
   }
 };
 
+export const createAndOpenWithEditor = ({ file, template }) => {
+  if (process.env.EDITOR) {
+    executeShellCommand(
+      `cp ${process.env.TEMPLATES_PATH}/${template}.mct-template ${process.env.DOCUMENTS_PATH}/${file}.md`
+    );
+    executeShellCommand(`$EDITOR ${process.env.DOCUMENTS_PATH}/${file}.md`);
+  } else {
+    console.log(`[ server/utils/helpers ] No $EDITOR detected...`);
+  }
+};
+
 export const listFilesInDocumentsPath = () => {
   return readdirSync(process.env.DOCUMENTS_PATH);
 };

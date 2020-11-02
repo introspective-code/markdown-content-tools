@@ -1,2 +1,3 @@
 DOCUMENTS_PATH=./documents
+TEMPLATES_PATH=./templates
 EXPORTS_PATH=./exports
