@@ -14,6 +14,14 @@ const Navigation = () => {
             location.pathname === "/" ? "navigation-selected" : ""
           }`}
         >
+          Select
+        </Link>
+        <Link
+          to={"/edit"}
+          className={`navigation-option ${
+            location.pathname === "/edit" ? "navigation-selected" : ""
+          }`}
+        >
           Edit
         </Link>
         <Link

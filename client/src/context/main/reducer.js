@@ -1,13 +1,19 @@
 export const initialState = {
-  testPingCount: 0,
+  mctDocument: null,
+  files: []
 };
 
 export const reducer = (state, action) => {
   switch (action.type) {
-    case "incrementTestPingCount":
+    case "SET_MCT_DOCUMENT":
       return {
         ...state,
-        testPingCount: state.testPingCount + 1,
+        mctDocument: action.payload.mctDocument,
+      };
+    case "SET_LISTED_FILES":
+      return {
+        ...state,
+        files: action.payload.files,
       };
     default:
       return state;

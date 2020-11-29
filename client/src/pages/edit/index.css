@@ -1,0 +1,61 @@
+.markdown-body {
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  font-size: 1em;
+}
+
+.codeblock {
+  background-color: white;
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.codeblock pre {
+  margin: 5px;
+  padding: 5px;
+  border: 2px solid #c8d6e5;
+}
+
+.codeblock-header {
+  text-align: center;
+  font-size: 0.75em;
+  font-weight: 400;
+}
+
+.codeblock-filename {
+  text-align: center;
+  font-size: 0.6em;
+  font-weight: 800;
+  color: #c8d6e5;
+}
+
+.front-matter {
+  margin: 0px 0px 20px 0px;
+  color: #c8d6e5;
+  font-weight: 100;
+  font-size: 1.25em;
+  border-bottom: 2px solid #576574;
+}
+
+.front-matter-bold {
+  font-weight: 800;
+}
+
+.front-matter-tags {
+  margin: 5px 0px 5px 0px;
+}
+
+.front-matter-tag {
+  display: inline-block;
+  margin: 2.5px;
+  padding: 2.5px 5px 2.5px 5px;
+  background-color: black;
+  font-weight: 400;
+  color: #1dd1a1;
+}
+
+.front-matter-missing {
+  font-weight: 800;
+  color: #ee5253;
+}

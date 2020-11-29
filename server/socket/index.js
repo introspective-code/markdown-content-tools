@@ -26,7 +26,7 @@ export const connectRealtimeServices = ({ io, socket }) => {
 
   socket.on("create-file", ({ file, template = 'coding' }) => {
     createAndOpenWithEditor({ file, template });
-    const path = `${process.env.DOCUMENTS_PATH}/${file}`;
+    const path = `${process.env.DOCUMENTS_PATH}/${file}.md`;
     socket.emit("update-document", getMctDocument(path));
   });
 };

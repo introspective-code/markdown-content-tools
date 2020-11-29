@@ -49,7 +49,7 @@ export const getMctDocument = (path) => {
 
   const components = [];
 
-  _.each(markdown.split("+++\n"), (section) => {
+  _.each(markdown.split("+++\n"), (section, index) => {
     if (_.includes(section, "<%%% codeblock %%%>")) {
       const { header, block, filename } = codeblocks[
         _.trim(section.split(":")[1], "\n")
@@ -64,6 +64,7 @@ export const getMctDocument = (path) => {
           markup: converter.render(block),
           markdown: block,
         },
+        id: filename
       });
     } else if (section !== "") {
       components.push({
@@ -73,6 +74,7 @@ export const getMctDocument = (path) => {
           markup: converter.render(section),
           markdown: section,
         },
+        id: `${index}`
       });
     }
   });
