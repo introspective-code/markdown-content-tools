@@ -4,6 +4,7 @@ import {
   listFilesInDocumentsPath,
   openWithEditor,
   createAndOpenWithEditor,
+  saveImageAndGetPath
 } from "../utils/helpers";
 
 const DOCUMENTS_PATH = process.env.DOCUMENTS_PATH;
@@ -28,6 +29,10 @@ export const connectRealtimeServices = ({ io, socket }) => {
     createAndOpenWithEditor({ file, template });
     const path = `${process.env.DOCUMENTS_PATH}/${file}.md`;
     socket.emit("update-document", getMctDocument(path));
+  });
+
+  socket.on("paste-image", ({ data, title }) => {
+    socket.emit("image-url", { path: saveImageAndGetPath({ data, title }) });
   });
 };
 

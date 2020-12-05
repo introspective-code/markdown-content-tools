@@ -12,6 +12,7 @@ const DOCUMENTS_PATH = process.env.DOCUMENTS_PATH;
 const EXPORTS_PATH = process.env.EXPORTS_PATH;
 const SOCKET_HEARTBEAT_TIMEOUT = 4000;
 const SOCKET_HEARTBEAT_INTERVAL = 2000;
+const TEMP_PATH = `tmp`;
 
 if (!existsSync(DOCUMENTS_PATH)) {
   console.log(`[ server ] Creating documents path at ${DOCUMENTS_PATH}`);
@@ -21,6 +22,12 @@ if (!existsSync(DOCUMENTS_PATH)) {
 if (!existsSync(EXPORTS_PATH)) {
   console.log(`[ server ] Creating exports path at ${EXPORTS_PATH}`);
   mkdirSync(EXPORTS_PATH);
+}
+
+if (!existsSync(TEMP_PATH)) {
+  console.log(`[ server ] Creating temp path at ${TEMP_PATH}`);
+  mkdirSync(`${TEMP_PATH}`);
+  mkdirSync(`${TEMP_PATH}/media`);
 }
 
 const app = express();
@@ -45,4 +52,9 @@ initializeRealtimeServices({ io });
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, "client/build")));
+app.use("/media", express.static(path.resolve(__dirname, `../tmp/media`)));
 app.use("/api/v1", api.use(io));
+
+app.get('/', (req, res) => {
+  res.status(200).send('OK');
+});

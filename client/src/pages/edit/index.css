@@ -59,3 +59,16 @@
   font-weight: 800;
   color: #ee5253;
 }
+
+.edit-container {
+  display: flex;
+}
+
+.editing-tools {
+  flex: 30%;
+  padding: 0 0.5em 0 0.5em;
+}
+
+.file-preview {
+  flex: 70%;
+}

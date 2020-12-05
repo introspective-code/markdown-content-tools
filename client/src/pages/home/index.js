@@ -37,14 +37,14 @@ const Home = () => {
 
   return (
     <React.Fragment>
-      <div className="edit-container">
-        <div className="edit-box">
+      <div className="select-container">
+        <div className="select-box">
           <NewFile
             handleClick={handleClickCreate}
             valid={isValidFilename}
           />
         </div>
-        <div className="edit-box">
+        <div className="select-box">
           <ListedFiles files={files} handleClick={handleClickFile} />
         </div>
       </div>
