@@ -25,17 +25,7 @@ const Edit = () => {
           </React.Fragment>
         )}
       </div>
-      <div className="editing-tools">
-        {mctDocument ? (
-          <React.Fragment>
-            <ImageUploader title={mctDocument.meta.title} />
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            <div className="no-file-selected">Please select a file...</div>
-          </React.Fragment>
-        )}
-      </div>
+      {mctDocument && <ImageUploader title={mctDocument.meta.title} />}
     </div>
   );
 };
@@ -118,6 +108,7 @@ const ImageUploader = ({ title }) => {
   const socket = useContext(SocketContext);
   const [inputValue, setInputValue] = useState('');
   const [isCopied, setIsCopied] = useState(false);
+  const [placeholder, setPlaceholder] = useState("Paste image here.");
 
   useEffect(() => {
     setTimeout(() => {
@@ -152,22 +143,49 @@ const ImageUploader = ({ title }) => {
     setIsCopied(true);
   }
 
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setPlaceholder('Drop file here.');
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setPlaceholder('Paste image here.');
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setPlaceholder('Paste image here.');
+  };
+
   return (
-    <React.Fragment>
+    <div
+      className={"image-uploader"}
+      onDrop={(e) => handleDrop(e)}
+      onDragOver={(e) => handleDragOver(e)}
+      onDragEnter={(e) => handleDragEnter(e)}
+      onDragLeave={(e) => handleDragLeave(e)}
+    >
       <input
+        className={"image-paste-field"}
         onPaste={handlePaste}
         type="text"
-        placeholder="Paste image here."
+        placeholder={placeholder}
         value={inputValue}
       />
-      <CopyToClipboard
-        text={inputValue}
-        onCopy={handleCopy}
-      >
-        <button>{isCopied ? 'Copied.' : 'Copy To Clipboard.'}</button>
+      <CopyToClipboard text={inputValue} onCopy={handleCopy}>
+        <div className={"copy-clipboard-btn"}>{isCopied ? "Copied." : "Copy To Clipboard."}</div>
       </CopyToClipboard>
       <Event event="image-url" handler={handleImageUrl} />
-    </React.Fragment>
+    </div>
   );
 }
 

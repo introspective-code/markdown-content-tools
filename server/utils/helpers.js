@@ -1,6 +1,7 @@
 import { commandSync } from "execa";
-import { readdirSync, writeFileSync } from "fs";
+import { readdirSync, writeFileSync, unlinkSync } from "fs";
 import _ from "lodash";
+import cloudinary from 'cloudinary';
 
 const PORT = process.env.PORT || 8000;
 
@@ -33,16 +34,36 @@ export const createAndOpenWithEditor = ({ file, template }) => {
   }
 };
 
-export const saveImageAndGetPath = ({ data, title }) => {
+export const saveImageAndGetPath = async ({ data, title }) => {
   const now = new Date().getTime();
   const fileTitle = _.kebabCase(title);
+
   const imageFileName = `${fileTitle}-${now}`;
   const uploadPath = `tmp/media/${imageFileName}.png`;
-  const mdImagePath = `![](http://localhost:${PORT}/media/${imageFileName}.png)`;
+
   const imageData = data.replace(/^data:image\/png;base64,/, "");
-  console.log(`[ server/utils/helpers ] saving image as ${imageFileName}`);
+  console.log(`[ server/utils/helpers ] uploading image ${imageFileName}`);
   writeFileSync(uploadPath, imageData, 'base64');
-  return mdImagePath;
+
+  try {
+    const { secure_url: secureUrl } = await uploadImage({ path: uploadPath });
+    unlinkSync(uploadPath);
+    return `![](${secureUrl})`;
+  } catch (err) {
+    console.log(err);
+    return "![]()";
+  }
+}
+
+export const uploadImage = ({ path }) => {
+  return new Promise((resolve, reject) => {
+    cloudinary.v2.uploader.upload(path, (error, result) => {
+      if (error) {
+        reject(error);
+      }
+      resolve(result);
+    });
+  });
 }
 
 export const listFilesInDocumentsPath = () => {

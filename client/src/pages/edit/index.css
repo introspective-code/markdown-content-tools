@@ -64,11 +64,36 @@
   display: flex;
 }
 
-.editing-tools {
-  flex: 30%;
-  padding: 0 0.5em 0 0.5em;
+.file-preview {
+  flex: 100%;
 }
 
-.file-preview {
-  flex: 70%;
+.image-uploader {
+  position: fixed;
+  bottom: 0.5em;
+  right: 0.5em;
+  background-color: black;
+  border-radius: 0.5em;
+  padding: 0.5em;
+  display: flex;
+  font-size: 0.75em;
+}
+
+.image-paste-field {
+  background-color: black;
+  border: none;
+  border: 1px solid #feca57;
+  padding: 0.25em 0.5em 0.25em 0.5em;
+  margin: 0.25em;
+  border-radius: 0.5em;
+  color: #feca57;
+}
+
+.copy-clipboard-btn {
+  color: #feca57;
+  padding: 0.25em 0.5em 0.25em 0.5em;
+  margin: 0.25em;
+  border: 1px solid #feca57;
+  border-radius: 0.5em;
+  cursor: pointer;
 }

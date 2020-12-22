@@ -31,8 +31,14 @@ export const connectRealtimeServices = ({ io, socket }) => {
     socket.emit("update-document", getMctDocument(path));
   });
 
-  socket.on("paste-image", ({ data, title }) => {
-    socket.emit("image-url", { path: saveImageAndGetPath({ data, title }) });
+  socket.on("paste-image", async ({ data, title }) => {
+    try {
+      const path = await saveImageAndGetPath({ data, title });
+      socket.emit("image-url", { path });
+    } catch(err) {
+      console.log(err);
+      socket.emit("image-url", { path: err.message });
+    }
   });
 };
 
