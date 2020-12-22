@@ -9,7 +9,8 @@
     "build": "./node_modules/.bin/babel -d ./dist ./server",
     "prebuild": "rm -rf dist/* client/build/*",
     "start": "node ./dist/index.js",
-    "prestart": "npm run build && cd client && npm run build && cd .. && mkdir dist/client dist/client/build && cp -rf client/build dist/client"
+    "prestart": "npm run build && cd client && npm run build && cd .. && mkdir dist/client dist/client/build && cp -rf client/build dist/client",
+    "get-medium-user": "node server/tools/get-medium-user"
   },
   "keywords": [
     "markdown",
@@ -27,6 +28,8 @@
     "nodemon": "2.0.4"
   },
   "dependencies": {
+    "@octokit/core": "3.2.4",
+    "axios": "0.21.1",
     "cloudinary": "1.23.0",
     "dotenv": "8.2.0",
     "execa": "4.0.3",

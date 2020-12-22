@@ -1,4 +1,18 @@
 DOCUMENTS_PATH=./documents
 TEMPLATES_PATH=./templates
 EXPORTS_PATH=./exports
+
+# https://cloudinary.com/console
 CLOUDINARY_URL=""
+
+# https://medium.com/me/settings
+MEDIUM_TOKEN=""
+
+# npm run get-medium-user
+MEDIUM_USER_ID=""
+
+# https://github.com/settings/tokens
+GITHUB_TOKEN=""
+
+# Your github username
+GITHUB_USERNAME=""

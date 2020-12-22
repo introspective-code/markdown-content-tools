@@ -63,6 +63,7 @@ export const getMctDocument = (path) => {
         content: {
           markup: converter.render(block),
           markdown: block,
+          code: getCodeFromBlock(block)
         },
         id: filename
       });
@@ -91,3 +92,8 @@ const getExtension = (language) => {
   };
   return extensionMap[language];
 };
+
+const getCodeFromBlock = (block) => {
+  const tickPattern = /```[a-z]*\n/g;
+  return block.replace(tickPattern, "");
+}

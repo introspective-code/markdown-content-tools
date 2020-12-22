@@ -4,7 +4,9 @@ import {
   listFilesInDocumentsPath,
   openWithEditor,
   createAndOpenWithEditor,
-  saveImageAndGetPath
+  saveImageAndGetPath,
+  saveAndGetExportedBlog,
+  createMediumDraftAndGetUrl
 } from "../utils/helpers";
 
 const DOCUMENTS_PATH = process.env.DOCUMENTS_PATH;
@@ -39,6 +41,16 @@ export const connectRealtimeServices = ({ io, socket }) => {
       console.log(err);
       socket.emit("image-url", { path: err.message });
     }
+  });
+
+  socket.on("export-blog", ({ mctDocument }) => {
+    const exportedBlog = saveAndGetExportedBlog({ mctDocument });
+    socket.emit("update-exported-blog", { exportedBlog });
+  });
+
+  socket.on("publish-medium-draft", async ({ mctDocument }) => {
+    const mediumDraftUrl = await createMediumDraftAndGetUrl({ mctDocument });
+    socket.emit("update-published-medium-draft", { mediumDraftUrl });
   });
 };
 

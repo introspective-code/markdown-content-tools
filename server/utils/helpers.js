@@ -2,8 +2,12 @@ import { commandSync } from "execa";
 import { readdirSync, writeFileSync, unlinkSync } from "fs";
 import _ from "lodash";
 import cloudinary from 'cloudinary';
+import { Octokit } from "@octokit/core"
+import axios from "axios";
 
 const PORT = process.env.PORT || 8000;
+const EXPORT_PATH = process.env.EXPORT_PATH || 'exports';
+const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 
 export const executeShellCommand = (command) => {
   console.log(`> ${command}`);
@@ -39,7 +43,7 @@ export const saveImageAndGetPath = async ({ data, title }) => {
   const fileTitle = _.kebabCase(title);
 
   const imageFileName = `${fileTitle}-${now}`;
-  const uploadPath = `tmp/media/${imageFileName}.png`;
+  const uploadPath = `tmp/${imageFileName}.png`;
 
   const imageData = data.replace(/^data:image\/png;base64,/, "");
   console.log(`[ server/utils/helpers ] uploading image ${imageFileName}`);
@@ -69,3 +73,130 @@ export const uploadImage = ({ path }) => {
 export const listFilesInDocumentsPath = () => {
   return readdirSync(process.env.DOCUMENTS_PATH);
 };
+
+export const getGists = async () => {
+  try {
+    const gists = await octokit.request('GET /gists');
+    return gists;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export const createGistAndGetScriptTag = async ({ name, content, description }) => {
+  try {
+    const { data } = await octokit.request("POST /gists", {
+      description,
+      files: {
+        [name]: {
+          content
+        },
+      },
+      public: true,
+    });
+    const { id } = data;
+    return `<script src="https://gist.github.com/${process.env.GITHUB_USERNAME}/${id}.js"></script>`;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
+export const createMediumDraftAndGetUrl = async ({ mctDocument }) => {
+  const { meta, components } = mctDocument;
+
+
+  try {
+    const title = meta.title;
+    const content = await getMediumDraftContent({ components });
+    const tags = meta.tags;
+
+    const { data: results } = await axios.post(
+      `https://api.medium.com/v1/users/${process.env.MEDIUM_USER_ID}/posts`,
+      {
+        title,
+        contentFormat: 'markdown',
+        content,
+        tags,
+        publishStatus: 'draft'
+      },
+      {
+        headers: {
+          "Authorization": `Bearer ${process.env.MEDIUM_TOKEN}`,
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+          "Accept-Charset": "utf-8"
+        }
+      }
+    );
+    const { url } = results.data;
+    return url;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
+export const saveAndGetExportedBlog = ({ mctDocument }) => {
+  const { meta, components } = mctDocument;
+
+  const exportPath = `${EXPORT_PATH}/${meta.date.split("T")[0]}-${_.kebabCase(meta.title)}.md`;
+  const fileContent = getBlogSafeFileContent({ components, meta });
+
+  writeFileSync(exportPath, fileContent);
+
+  return { exportPath, fileContent };
+}
+
+export const getBlogSafeFileContent = ({ components, meta }) => {
+  let output = "";
+
+  output = getFrontMatter({ meta });
+
+  _.each(components, ({ type, content, meta: componentMeta }) => {
+    output += content.markdown;
+  });
+
+  return output;
+}
+
+export const getMediumDraftContent = async ({ components }) => {
+  let output = "";
+
+  try {
+    for (const component of components) {
+      const { type, content, meta } = component;
+
+      if (type === 'codeblock') {
+        const scriptTag = await createGistAndGetScriptTag({
+          name: meta.filename,
+          content: content.code,
+          title: meta.header
+        });
+        output += `\n${scriptTag}\n`;
+      } else {
+        output += content.markdown;
+      }
+    }
+  } catch (err) {
+    console.log(err);
+  }
+
+  return output;
+}
+
+export const getFrontMatter = ({ meta }) => {
+  let output = '---\n';
+
+  output += `layout: post\n`;
+  output += `title: "${meta.title}"\n`;
+  output += `description: "${meta.description}"\n`;
+  output += `date: ${meta.date.split("T")[0]}\n`;
+  output += `tags: [${meta.tags.join(',')}]\n`;
+  output += `comments: true\n`;
+  output += `share: true\n`;
+
+  output += '---\n';
+
+  return output;
+}

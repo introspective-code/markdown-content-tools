@@ -7,6 +7,7 @@ import { connectRealtimeServices, initializeRealtimeServices } from "./socket";
 import api from "./api/v1";
 import { existsSync, mkdirSync } from "fs";
 import regeneratorRuntime from "regenerator-runtime";
+import { createMediumDraft } from "./utils/helpers";
 
 const DOCUMENTS_PATH = process.env.DOCUMENTS_PATH;
 const EXPORTS_PATH = process.env.EXPORTS_PATH;
@@ -27,7 +28,6 @@ if (!existsSync(EXPORTS_PATH)) {
 if (!existsSync(TEMP_PATH)) {
   console.log(`[ server ] Creating temp path at ${TEMP_PATH}`);
   mkdirSync(`${TEMP_PATH}`);
-  mkdirSync(`${TEMP_PATH}/media`);
 }
 
 const app = express();
@@ -52,7 +52,6 @@ initializeRealtimeServices({ io });
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, "client/build")));
-app.use("/media", express.static(path.resolve(__dirname, `../tmp/media`)));
 app.use("/api/v1", api.use(io));
 
 app.get('/', (req, res) => {
