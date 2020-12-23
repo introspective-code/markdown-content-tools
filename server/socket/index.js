@@ -6,7 +6,8 @@ import {
   createAndOpenWithEditor,
   saveImageAndGetPath,
   saveAndGetExportedBlog,
-  createMediumDraftAndGetUrl
+  createMediumDraftAndGetUrl,
+  executeShellCommand
 } from "../utils/helpers";
 
 const DOCUMENTS_PATH = process.env.DOCUMENTS_PATH;

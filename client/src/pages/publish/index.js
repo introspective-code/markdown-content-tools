@@ -10,7 +10,7 @@ const Publish = () => {
   const { state } = useContext(MainContext);
   const { mctDocument } = state;
 
-  const handlePublishMediaumDraft = (mctDocument) => {
+  const handlePublishMediumDraft = (mctDocument) => {
     socket.emit("publish-medium-draft", { mctDocument });
   };
 
@@ -22,7 +22,7 @@ const Publish = () => {
     <React.Fragment>
       <div className="export-section">
         {mctDocument ? (
-          <button onClick={() => handlePublishMediaumDraft(mctDocument)}>
+          <button onClick={() => handlePublishMediumDraft(mctDocument)}>
             Publish Medium Draft
           </button>
         ) : (

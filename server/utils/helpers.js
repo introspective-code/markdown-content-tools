@@ -4,6 +4,7 @@ import _ from "lodash";
 import cloudinary from 'cloudinary';
 import { Octokit } from "@octokit/core"
 import axios from "axios";
+import regeneratorRuntime from "regenerator-runtime";
 
 const PORT = process.env.PORT || 8000;
 const EXPORT_PATH = process.env.EXPORT_PATH || 'exports';
@@ -105,7 +106,6 @@ export const createGistAndGetScriptTag = async ({ name, content, description }) 
 export const createMediumDraftAndGetUrl = async ({ mctDocument }) => {
   const { meta, components } = mctDocument;
 
-
   try {
     const title = meta.title;
     const content = await getMediumDraftContent({ components });
@@ -130,6 +130,9 @@ export const createMediumDraftAndGetUrl = async ({ mctDocument }) => {
       }
     );
     const { url } = results.data;
+
+    executeShellCommand(`open ${url}`);
+
     return url;
   } catch (err) {
     console.log(err);
@@ -144,6 +147,8 @@ export const saveAndGetExportedBlog = ({ mctDocument }) => {
   const fileContent = getBlogSafeFileContent({ components, meta });
 
   writeFileSync(exportPath, fileContent);
+
+  executeShellCommand(`$EDITOR ${exportPath}`);
 
   return { exportPath, fileContent };
 }
