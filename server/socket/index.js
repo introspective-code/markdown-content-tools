@@ -9,6 +9,7 @@ import {
   createMediumDraftAndGetUrl,
   executeShellCommand
 } from "../utils/helpers";
+import { TEMP_DIR } from "../utils/constants";
 
 const DOCUMENTS_PATH = process.env.DOCUMENTS_PATH;
 let lastEditedFile;
@@ -37,10 +38,10 @@ export const connectRealtimeServices = ({ io, socket }) => {
   socket.on("paste-image", async ({ data, title }) => {
     try {
       const path = await saveImageAndGetPath({ data, title });
-      socket.emit("image-url", { path });
+      socket.emit("media-url", { path });
     } catch(err) {
       console.log(err);
-      socket.emit("image-url", { path: err.message });
+      socket.emit("media-url", { path: err.message });
     }
   });
 

@@ -86,14 +86,31 @@
   padding: 0.25em 0.5em 0.25em 0.5em;
   margin: 0.25em;
   border-radius: 0.5em;
+  width: 30vw;
   color: #feca57;
 }
 
-.copy-clipboard-btn {
+.copy-clipboard-btn, .file-upload-btn {
   color: #feca57;
   padding: 0.25em 0.5em 0.25em 0.5em;
   margin: 0.25em;
   border: 1px solid #feca57;
   border-radius: 0.5em;
   cursor: pointer;
+}
+
+.copy-clipboard-btn:hover, .file-upload-btn:hover {
+  opacity: 0.5;
+}
+
+.file-uploader {
+  color: white;
+  display: flex;
+}
+
+.file-input-field {
+  /* position: absolute; */
+  /* right: -100vw; */
+  /* opacity: 0; */
+  display: none;
 }

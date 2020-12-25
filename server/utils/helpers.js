@@ -5,6 +5,8 @@ import cloudinary from 'cloudinary';
 import { Octokit } from "@octokit/core"
 import axios from "axios";
 import regeneratorRuntime from "regenerator-runtime";
+import { TEMP_PATH } from "./constants";
+import mime from "mime-types";
 
 const PORT = process.env.PORT || 8000;
 const EXPORT_PATH = process.env.EXPORT_PATH || 'exports';
@@ -51,7 +53,7 @@ export const saveImageAndGetPath = async ({ data, title }) => {
   writeFileSync(uploadPath, imageData, 'base64');
 
   try {
-    const { secure_url: secureUrl } = await uploadImage({ path: uploadPath });
+    const { secure_url: secureUrl } = await uploadMedia({ path: uploadPath });
     unlinkSync(uploadPath);
     return `![](${secureUrl})`;
   } catch (err) {
@@ -60,13 +62,26 @@ export const saveImageAndGetPath = async ({ data, title }) => {
   }
 }
 
-export const uploadImage = ({ path }) => {
+export const uploadMedia = ({ path }) => {
   return new Promise((resolve, reject) => {
     cloudinary.v2.uploader.upload(path, (error, result) => {
       if (error) {
         reject(error);
       }
       resolve(result);
+    });
+  });
+}
+
+export const uploadMediaAndUnlink = ({ path }) => {
+  return new Promise((resolve, reject) => {
+    cloudinary.v2.uploader.upload(path, (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        unlinkSync(path);
+        resolve({ secureUrl: result.secure_url });
+      }
     });
   });
 }
@@ -204,4 +219,24 @@ export const getFrontMatter = ({ meta }) => {
   output += '---\n';
 
   return output;
+}
+
+export const moveUploadedFile = ({ file }) => {
+  const path = getUploadedFilePath({ file });
+  return new Promise((resolve, reject) => {
+    file.mv(path, (error) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve({ path });
+      }
+    });
+  });
+}
+
+export const getUploadedFilePath = ({ file }) => {
+  const extension = mime.extension(file.mimetype);
+  const filename = file.name.replace(/\.[^/.]+$/, "");
+  const timestamp = (new Date()).getTime();
+  return `${timestamp}-${_.kebabCase(filename)}.${extension}`;
 }

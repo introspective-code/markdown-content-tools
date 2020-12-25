@@ -7,13 +7,16 @@ import { connectRealtimeServices, initializeRealtimeServices } from "./socket";
 import api from "./api/v1";
 import { existsSync, mkdirSync } from "fs";
 import regeneratorRuntime from "regenerator-runtime";
-import { createMediumDraft } from "./utils/helpers";
+import fileUpload from "express-fileupload";
+import cors from "cors";
+import {
+  TEMP_PATH,
+  SOCKET_HEARTBEAT_TIMEOUT,
+  SOCKET_HEARTBEAT_INTERVAL,
+} from "./utils/constants";
 
 const DOCUMENTS_PATH = process.env.DOCUMENTS_PATH;
 const EXPORTS_PATH = process.env.EXPORTS_PATH;
-const SOCKET_HEARTBEAT_TIMEOUT = 4000;
-const SOCKET_HEARTBEAT_INTERVAL = 2000;
-const TEMP_PATH = `tmp`;
 
 if (!existsSync(DOCUMENTS_PATH)) {
   console.log(`[ server ] Creating documents path at ${DOCUMENTS_PATH}`);
@@ -49,6 +52,8 @@ io.on("connection", (socket) => connectRealtimeServices({ io, socket }));
 
 initializeRealtimeServices({ io });
 
+app.use(cors());
+app.use(fileUpload());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, "client/build")));
