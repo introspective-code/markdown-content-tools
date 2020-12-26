@@ -1,0 +1,13 @@
+.loading-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  color: #576574;
+}
+
+.loading-message {
+  font-size: 1.5em;
+  padding: 0.5em;
+  font-weight: 100;
+}

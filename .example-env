@@ -1,5 +1,4 @@
 DOCUMENTS_PATH=./documents
-TEMPLATES_PATH=./templates
 EXPORTS_PATH=./exports
 
 # https://cloudinary.com/console
@@ -16,3 +15,6 @@ GITHUB_TOKEN=""
 
 # Your github username
 GITHUB_USERNAME=""
+
+# Local path to jekyll blog
+JEKYLL_BLOG_PATH=""

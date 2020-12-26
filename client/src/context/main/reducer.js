@@ -1,6 +1,10 @@
 export const initialState = {
   mctDocument: null,
-  files: []
+  files: [],
+  exportedBlog: null,
+  publishedDraft: null,
+  isExporting: false,
+  isPublishing: false
 };
 
 export const reducer = (state, action) => {
@@ -14,6 +18,28 @@ export const reducer = (state, action) => {
       return {
         ...state,
         files: action.payload.files,
+      };
+    case "INIT_EXPORT":
+      return {
+        ...state,
+        isExporting: true,
+      };
+    case "SET_EXPORT":
+      return {
+        ...state,
+        exportedBlog: action.payload.exportedBlog,
+        isExporting: false
+      };
+    case "INIT_PUBLISH":
+      return {
+        ...state,
+        isPublishing: true,
+      };
+    case "SET_PUBLISH":
+      return {
+        ...state,
+        publishedBlog: action.payload.publishedBlog,
+        isPublishing: false
       };
     default:
       return state;

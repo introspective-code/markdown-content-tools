@@ -1,3 +1,47 @@
 .export-section {
   color: white;
 }
+
+.exported-blog-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.exported-blog-location {
+  font-weight: 100;
+  margin: 0.5em;
+  padding: 0.5em;
+  color: #00d2d3;
+  border-bottom: 2px solid #00d2d3;
+  text-align: center;
+  cursor: pointer;
+  transition: 300ms ease-in-out all;
+}
+
+.exported-blog-path {
+  font-weight: 700;
+}
+
+.exported-blog-location:hover {
+  color: #feca57;
+  border-bottom: 2px solid #feca57;
+}
+
+.exported-blog-location:active {
+  color: #ee5253;
+  border-bottom: 2px solid #ee5253;
+}
+
+.exported-blog-markdown-code {
+  background-color: black;
+  width: 90%;
+  margin: 0.5em;
+  padding: 0.5em 1.5em 0.5em 1.5em;
+  border-radius: 0.5em;
+  max-height: 60vh;
+  overflow-y: scroll;
+  box-sizing: content-box;
+  font-size: 0.75em;
+}

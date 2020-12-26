@@ -11,6 +11,7 @@ import mime from "mime-types";
 const PORT = process.env.PORT || 8000;
 const EXPORT_PATH = process.env.EXPORT_PATH || 'exports';
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+const TEMPLATES_PATH = './templates';
 
 export const executeShellCommand = (command) => {
   console.log(`> ${command}`);
@@ -33,7 +34,7 @@ export const openWithEditor = (file) => {
 export const createAndOpenWithEditor = ({ file, template }) => {
   if (process.env.EDITOR) {
     executeShellCommand(
-      `cp ${process.env.TEMPLATES_PATH}/${template}.mct-template ${process.env.DOCUMENTS_PATH}/${file}.md`
+      `cp ${TEMPLATES_PATH}/${template}.mct-template ${process.env.DOCUMENTS_PATH}/${file}.md`
     );
     executeShellCommand(`$EDITOR ${process.env.DOCUMENTS_PATH}/${file}.md`);
   } else {
