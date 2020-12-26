@@ -45,6 +45,9 @@ const Export = () => {
       <div className="export-section">
         {exportedBlog && (
           <div className="exported-blog-preview">
+            <div className="exported-blog-reexport-btn" onClick={() => handleExportBlog(mctDocument)}>
+              Re-Export Blog
+            </div>
             <div className="exported-blog-location">
               Your blog has been exported to
               <div className="exported-blog-path">{exportedBlog.exportPath}</div>

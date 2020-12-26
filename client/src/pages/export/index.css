@@ -45,3 +45,18 @@
   box-sizing: content-box;
   font-size: 0.75em;
 }
+
+.exported-blog-reexport-btn {
+  color: #feca57;
+  border-bottom: 2px solid #feca57;
+  padding: 0.5em;
+  font-size: 0.75em;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 300ms ease-in-out all;
+}
+
+.exported-blog-reexport-btn:hover {
+  color: #c8d6e5;
+  border-bottom: 2px solid #c8d6e5;
+}
