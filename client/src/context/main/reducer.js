@@ -38,7 +38,7 @@ export const reducer = (state, action) => {
     case "SET_PUBLISH":
       return {
         ...state,
-        publishedBlog: action.payload.publishedBlog,
+        publishedDraft: action.payload.publishedDraft,
         isPublishing: false
       };
     default:

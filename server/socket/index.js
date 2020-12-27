@@ -6,8 +6,7 @@ import {
   createAndOpenWithEditor,
   saveImageAndGetPath,
   saveAndGetExportedBlog,
-  createMediumDraftAndGetUrl,
-  executeShellCommand
+  createAndGetMediumDraft
 } from "../utils/helpers";
 import { TEMP_DIR } from "../utils/constants";
 
@@ -51,8 +50,8 @@ export const connectRealtimeServices = ({ io, socket }) => {
   });
 
   socket.on("publish-medium-draft", async ({ mctDocument }) => {
-    const mediumDraftUrl = await createMediumDraftAndGetUrl({ mctDocument });
-    socket.emit("update-published-medium-draft", { mediumDraftUrl });
+    const publishedDraft = await createAndGetMediumDraft({ mctDocument });
+    socket.emit("update-published-medium-draft", { publishedDraft });
   });
 };
 

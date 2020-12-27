@@ -119,7 +119,7 @@ export const createGistAndGetScriptTag = async ({ name, content, description }) 
   }
 }
 
-export const createMediumDraftAndGetUrl = async ({ mctDocument }) => {
+export const createAndGetMediumDraft = async ({ mctDocument }) => {
   const { meta, components } = mctDocument;
 
   try {
@@ -131,30 +131,33 @@ export const createMediumDraftAndGetUrl = async ({ mctDocument }) => {
       `https://api.medium.com/v1/users/${process.env.MEDIUM_USER_ID}/posts`,
       {
         title,
-        contentFormat: 'markdown',
+        contentFormat: "markdown",
         content,
         tags,
-        publishStatus: 'draft'
+        publishStatus: "draft",
       },
       {
         headers: {
-          "Authorization": `Bearer ${process.env.MEDIUM_TOKEN}`,
+          Authorization: `Bearer ${process.env.MEDIUM_TOKEN}`,
           "Content-Type": "application/json",
-          "Accept": "application/json",
-          "Accept-Charset": "utf-8"
-        }
+          Accept: "application/json",
+          "Accept-Charset": "utf-8",
+        },
       }
     );
     const { url } = results.data;
 
-    executeShellCommand(`open ${url}`);
-
-    return url;
+    return {
+      url,
+      content,
+      tags,
+      title
+    };
   } catch (err) {
     console.log(err);
     return null;
   }
-}
+};
 
 export const saveAndGetExportedBlog = ({ mctDocument }) => {
   const { meta, components } = mctDocument;
