@@ -6,7 +6,8 @@ import {
   createAndOpenWithEditor,
   saveImageAndGetPath,
   saveAndGetExportedBlog,
-  createAndGetMediumDraft
+  createAndGetMediumDraft,
+  createAndGetJekyllBlog
 } from "../utils/helpers";
 import { TEMP_DIR } from "../utils/constants";
 
@@ -17,6 +18,10 @@ export const connectRealtimeServices = ({ io, socket }) => {
   if (lastEditedFile) {
     socket.emit("update-document", getMctDocument(lastEditedFile));
   }
+
+  socket.on("open-file", ({ file }) => {
+    openWithEditor(file);
+  });
 
   socket.on("list-files", () => {
     socket.emit("list-files", { files: listFilesInDocumentsPath() });
@@ -52,6 +57,11 @@ export const connectRealtimeServices = ({ io, socket }) => {
   socket.on("publish-medium-draft", async ({ mctDocument }) => {
     const publishedDraft = await createAndGetMediumDraft({ mctDocument });
     socket.emit("update-published-medium-draft", { publishedDraft });
+  });
+
+  socket.on("publish-jekyll-blog", async ({ mctDocument }) => {
+    const publishedBlog = await createAndGetJekyllBlog({ mctDocument });
+    socket.emit("update-published-jekyll-blog", { publishedBlog });
   });
 };
 

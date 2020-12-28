@@ -9,7 +9,8 @@ const Prompt = ({
   handleClickAction,
   handleClickHelp,
   condition,
-  helpMessage
+  helpMessage,
+  hideHelp
 }) => {
   return (
     <div className="prompt-area">
@@ -23,10 +24,12 @@ const Prompt = ({
           </div>
         </React.Fragment>
       ) : (
+        !hideHelp && (
         <div className="prompt-help-area" onClick={handleClickHelp}>
           <FontAwesomeIcon icon={faQuestionCircle} size="2x" />
           <div className="prompt-help-message">{helpMessage}</div>
         </div>
+        )
       )}
     </div>
   );

@@ -3,6 +3,7 @@ export const initialState = {
   files: [],
   exportedBlog: null,
   publishedDraft: null,
+  publishedBlog: null,
   isExporting: false,
   isPublishing: false
 };
@@ -30,15 +31,26 @@ export const reducer = (state, action) => {
         exportedBlog: action.payload.exportedBlog,
         isExporting: false
       };
-    case "INIT_PUBLISH":
+    case "INIT_PUBLISH_MEDIUM_DRAFT":
       return {
         ...state,
         isPublishing: true,
       };
-    case "SET_PUBLISH":
+    case "SET_PUBLISH_MEDIUM_DRAFT":
       return {
         ...state,
         publishedDraft: action.payload.publishedDraft,
+        isPublishing: false
+      };
+    case "INIT_PUBLISH_JEKYLL_BLOG":
+      return {
+        ...state,
+        isPublishing: true,
+      };
+    case "SET_PUBLISH_JEKYLL_BLOG":
+      return {
+        ...state,
+        publishedBlog: action.payload.publishedBlog,
         isPublishing: false
       };
     default:

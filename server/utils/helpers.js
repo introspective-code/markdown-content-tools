@@ -172,6 +172,28 @@ export const saveAndGetExportedBlog = ({ mctDocument }) => {
   return { exportPath, fileContent };
 }
 
+export const createAndGetJekyllBlog = ({ mctDocument }) => {
+  const { meta, components } = mctDocument;
+
+  const title = _.kebabCase(meta.title);
+  const date = meta.date.split("T")[0];
+
+  const filename = `${date}-${title}.md`;
+  const exportPath = `${process.env.JEKYLL_BLOG_PATH}/_posts/${filename}`;
+
+  const content = getBlogSafeFileContent({ components, meta });
+
+  writeFileSync(exportPath, content);
+
+  executeShellCommand(
+    `cd ${process.env.JEKYLL_BLOG_PATH} && git add _posts/${filename} && git commit -m "[mct] Publish blog: ${meta.title}" && git push origin master`
+  );
+
+  const url = `${process.env.JEKYLL_BLOG_URL}/${date}/${title}/`;
+
+  return { url, content, title: meta.title };
+};
+
 export const getBlogSafeFileContent = ({ components, meta }) => {
   let output = "";
 
