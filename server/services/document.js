@@ -91,10 +91,13 @@ export const getMctDocument = (path) => {
 const getExtension = (language) => {
   const extensionMap = {
     html: "html",
+    text: "txt",
+    bash: "sh",
+    typescript: "ts",
     javascript: "js",
-    json: "json",
+    json: "json"
   };
-  return extensionMap[language];
+  return extensionMap[language] ? extensionMap[language] : 'txt';
 };
 
 const getCodeFromBlock = (block) => {
